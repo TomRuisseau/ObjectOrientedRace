@@ -21,4 +21,12 @@ public class Plane extends AirVehicle {
 
         super.movesCounter++;
     }
+
+    @Override
+    public void Display(int usedCharactersCount, float finishLineDistance) {
+        String string = "Plane #" + super.bibNumber;
+        System.out.print(string);
+
+        super.Display(string.length(), finishLineDistance);
+    }
 }

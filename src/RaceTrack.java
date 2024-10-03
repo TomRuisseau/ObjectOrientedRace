@@ -12,19 +12,15 @@ import java.util.Collections;
 import java.util.List;
 
 public class RaceTrack {
-    private int instances;
-
     private float finishLineDistance; //Km
-
-    private float turnsCounter;
 
     private List<Vehicle> vehicles;
 
     private int arrivedVehicles;
 
-    public RaceTrack(int instances, float finishLineDistance, int numberOfVehiclesTypes) {
-        this.instances = instances;
-        this.finishLineDistance = finishLineDistance;
+    public RaceTrack(int instances, int numberOfVehiclesTypes) {
+        // Randomize the finish line distance between 30 and 60 Km
+        this.finishLineDistance = (float) (Math.random() * 30 + 30);
         this.arrivedVehicles = 0;
 
         vehicles = new ArrayList<>();
@@ -46,10 +42,9 @@ public class RaceTrack {
             vehicle.Move();
 
             if (vehicle.getDistanceTravelled() >= finishLineDistance && !vehicle.IsArrived()) {
-                vehicle.Arrive(++arrivedVehicles);
+                vehicle.Arrive(++arrivedVehicles, finishLineDistance);
             }
         }
-        turnsCounter++;
     }
 
     public boolean IsRaceFinished() {
@@ -57,8 +52,17 @@ public class RaceTrack {
     }
 
     public void displayResults() {
+        ClearConsole();
         displayIndividualRanks();
-        System.out.println();
+        // Wait for the user to press enter
+        System.out.println("Press enter to display the ranking by type");
+        try {
+            System.in.read();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        ClearConsole();
         displayRankingByType();
     }
 
@@ -93,24 +97,20 @@ public class RaceTrack {
     }
 
     public void displayCurrentState() {
-        // Clear the console
+        ClearConsole();
 
         // Order vehicles by bib number
         vehicles.sort((v1, v2) -> v1.getBibNumber() - v2.getBibNumber());
 
         // Display the current state of the vehicles with arrows representing the percentage of the distance travelled
-
         for (Vehicle vehicle : vehicles) {
-            System.out.print(vehicle.getClass().getSimpleName() + " " + vehicle.getBibNumber() + " [");
-            float percentage = vehicle.getDistanceTravelled() / finishLineDistance;
-            for (int i = 0; i < 10; i++) {
-                if (i < percentage * 10) {
-                    System.out.print(">");
-                } else {
-                    System.out.print(" ");
-                }
-            }
-            System.out.println("]");
+            vehicle.Display(0, finishLineDistance);
+        }
+    }
+
+    private void ClearConsole() {
+        for (int i = 0; i < 50; i++) {
+            System.out.println();
         }
     }
 }

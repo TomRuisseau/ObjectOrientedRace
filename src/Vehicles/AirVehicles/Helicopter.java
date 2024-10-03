@@ -7,6 +7,7 @@ public class Helicopter extends AirVehicle {
         super.bibNumber = bibNumber;
     }
 
+    @Override
     public void Move() {
         if (super.isArrived) {
             return;
@@ -20,5 +21,13 @@ public class Helicopter extends AirVehicle {
         super.distanceTravelled += isDisadvantaged ? speed * (1 - disadvantageFactor) : speed;
 
         super.movesCounter++;
+    }
+
+
+    public void Display(int usedCharactersCount, float finishLineDistance) {
+        String string = "Helicopter #" + super.bibNumber;
+        System.out.print(string);
+
+        super.Display(string.length(), finishLineDistance);
     }
 }
