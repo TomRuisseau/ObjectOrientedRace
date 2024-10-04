@@ -7,18 +7,17 @@ import Vehicles.WaterVehicles.Boat;
 import Vehicles.WaterVehicles.Submarine;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
 public class RaceTrack {
-    private float finishLineDistance; //Km
+    private final float finishLineDistance; //Km
 
-    private List<Vehicle> vehicles;
+    private final List<Vehicle> vehicles;
 
     private int arrivedVehicles;
 
-    public RaceTrack(int instances, int numberOfVehiclesTypes) {
+    public RaceTrack(int instances) {
         // Randomize the finish line distance between 30 and 60 Km
         this.finishLineDistance = (float) (Math.random() * 30 + 30);
         this.arrivedVehicles = 0;
@@ -54,6 +53,7 @@ public class RaceTrack {
     public void displayResults() {
         ClearConsole();
         displayIndividualRanks();
+
         // Wait for the user to press enter
         System.out.println("Press enter to display the ranking by type");
         try {
@@ -70,10 +70,16 @@ public class RaceTrack {
         // Sort the vehicles by ranking
         vehicles.sort((v1, v2) -> v1.getRanking() - v2.getRanking());
 
+        // Print the header row
+        System.out.printf("%-15s %-15s %-15s%n", "Vehicle Type", "Moves", "Ranking");
+        System.out.println("-----------------------------------------------------");
+
+        // Print the rows for each vehicle
         for (Vehicle vehicle : vehicles) {
-            System.out.println(vehicle.getClass().getSimpleName() + " arrived in " + vehicle.getMovesCounter() + " moves and is ranked " + vehicle.getRanking());
+            System.out.printf("%-15s %-15d %-15d%n", vehicle.getClass().getSimpleName(), vehicle.getMovesCounter(), vehicle.getRanking());
         }
     }
+
 
     private void displayRankingByType(){
         var rankingSumByType = new java.util.HashMap<String, Integer>();
@@ -98,6 +104,8 @@ public class RaceTrack {
 
     public void displayCurrentState() {
         ClearConsole();
+
+        System.out.println("Finish line distance: " + finishLineDistance + " Km");
 
         // Order vehicles by bib number
         vehicles.sort((v1, v2) -> v1.getBibNumber() - v2.getBibNumber());

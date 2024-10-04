@@ -17,31 +17,27 @@ public abstract class Vehicle {
     protected int bibNumber;
 
     public void Display(int usedCharactersCount, float finishLineDistance) {
-        // Display spaces to align the beginning of the line
-        for (int i = 0; i < 20 - usedCharactersCount; i++) {
-            System.out.print(" ");
-        }
+        // Calculate the distance progress
+        int progressMarks = (int) Math.ceil(distanceTravelled / finishLineDistance * 20);
 
-        int lineCount = 0;
-        // Draw a line representing the distance travelled by the vehicle
-        for (int i = 0; i < Math.ceil(distanceTravelled / finishLineDistance * 20); i++) {
+        // Print spaces to align the beginning of the line
+        System.out.printf("%-" + (15 - usedCharactersCount) + "s", "");
+
+        // Draw the line representing the distance travelled
+        for (int i = 0; i < progressMarks; i++) {
             System.out.print("-");
-            lineCount++;
         }
 
+        // Print the arrow or finish symbol
         System.out.print(isArrived ? "-" : ">");
 
-
-        // Draw the finish line
-        for (int i = 0; i < 20 - lineCount; i++) {
+        // Draw spaces after the progress line to the finish
+        for (int i = 0; i < 20 - progressMarks; i++) {
             System.out.print(" ");
         }
-        System.out.print("|  ");
 
-        // Display the distance travelled by the vehicle, formatted to 2 decimal places
-        System.out.printf("%.2f", distanceTravelled);
-        System.out.print(" Km         ");
-        System.out.println(isArrived ? this.ranking : "");
+        // Print the finish line, distance, and ranking if arrived
+        System.out.printf("|  %.2f Km    %s%n", distanceTravelled, isArrived ? this.ranking : "");
     }
 
     public Vehicle() {
