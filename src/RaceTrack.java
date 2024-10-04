@@ -12,12 +12,15 @@ import java.util.List;
 
 public class RaceTrack {
     private final float finishLineDistance; //Km
+    private final int instances;
 
     private final List<Vehicle> vehicles;
 
     private int arrivedVehicles;
 
     public RaceTrack(int instances) {
+        this.instances = instances;
+
         // Randomize the finish line distance between 30 and 60 Km
         this.finishLineDistance = (float) (Math.random() * 30 + 30);
         this.arrivedVehicles = 0;
@@ -53,8 +56,7 @@ public class RaceTrack {
     public void displayResults() {
         ClearConsole();
         displayIndividualRanks();
-
-        // Wait for the user to press enter
+        System.out.println();
         System.out.println("Press enter to display the ranking by type");
         try {
             System.in.read();
@@ -81,7 +83,7 @@ public class RaceTrack {
     }
 
 
-    private void displayRankingByType(){
+    private void displayRankingByType() {
         var rankingSumByType = new java.util.HashMap<String, Integer>();
 
         // Sum the rankings of each type
@@ -95,10 +97,15 @@ public class RaceTrack {
         var sortedTypes = new ArrayList<>(rankingSumByType.keySet());
         sortedTypes.sort((t1, t2) -> rankingSumByType.get(t1) - rankingSumByType.get(t2));
 
+        // Print the header row
+        System.out.printf("%-15s %-15s %-15s%n", "Vehicle Type", "Team Rank", "Average Ranking");
+        System.out.println("-----------------------------------------------------");
+
         // Display the types and their ranking compared to the other types
         for (int i = 0; i < sortedTypes.size(); i++) {
             String type = sortedTypes.get(i);
-            System.out.println(type + "s are ranked " + (i + 1) + " as a team with a summed ranking of " + rankingSumByType.get(type));
+            int summedRanking = rankingSumByType.get(type);
+            System.out.printf("%-15s %-15d %-15.1f%n", type + "s", (i + 1), (float)summedRanking / instances);
         }
     }
 
