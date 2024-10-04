@@ -12,7 +12,7 @@ import java.util.List;
 
 public class RaceTrack {
     private final float finishLineDistance; //Km
-    private final int instances;
+    private final int instances;  // Number of vehicles per type
 
     private final List<Vehicle> vehicles;
 
@@ -38,11 +38,13 @@ public class RaceTrack {
         }
     }
 
+    // Move each vehicle and check if it has arrived
     public void NextTurn() {
-        Collections.shuffle(vehicles); // Make the order of the vehicles random
+        Collections.shuffle(vehicles); // Make the order of the vehicles random for fairness
         for (Vehicle vehicle : vehicles) {
             vehicle.Move();
 
+            // If the vehicle has arrived, warn it and give it its ranking
             if (vehicle.getDistanceTravelled() >= finishLineDistance && !vehicle.IsArrived()) {
                 vehicle.Arrive(++arrivedVehicles, finishLineDistance);
             }
@@ -53,6 +55,7 @@ public class RaceTrack {
         return arrivedVehicles == vehicles.size();
     }
 
+    // Show individual rankings and rankings by type, one at a time
     public void displayResults() {
         ClearConsole();
         displayIndividualRanks();
@@ -68,6 +71,7 @@ public class RaceTrack {
         displayRankingByType();
     }
 
+    // Display the ranks of each vehicle, differentiated by bib number
     private void displayIndividualRanks() {
         // Sort the vehicles by ranking
         vehicles.sort((v1, v2) -> v1.getRanking() - v2.getRanking());

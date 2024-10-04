@@ -28,7 +28,6 @@ public abstract class Vehicle {
             System.out.print("-");
         }
 
-        // Print the arrow or finish symbol
         System.out.print(isArrived ? "-" : ">");
 
         // Draw spaces after the progress line to the finish
@@ -60,6 +59,8 @@ public abstract class Vehicle {
     public void Arrive(int ranking, float finishLineDistance) {
         this.isArrived = true;
         this.ranking = ranking;
+
+        // Forcing vehicle to stop on the finish line
         distanceTravelled = finishLineDistance;
     }
 
